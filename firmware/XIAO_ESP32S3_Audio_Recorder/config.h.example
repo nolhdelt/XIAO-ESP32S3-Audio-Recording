@@ -1,0 +1,20 @@
+#pragma once
+
+// Copy this file to "config.h" (same folder) and fill in your own values.
+// config.h is gitignored so your WiFi credentials never get committed.
+
+// ---- WiFi credentials ----
+#define WIFI_SSID     "YOUR_WIFI_SSID"
+#define WIFI_PASSWORD "YOUR_WIFI_PASSWORD"
+
+// ---- Upload destination ----
+// The firmware POSTs the raw WAV bytes to this URL when a recording
+// finishes. Point it at server/receiver.py (see repo README), or at
+// any HTTP endpoint you control that accepts a POST body.
+// Example: "http://192.168.1.50:5000/upload"
+#define SERVER_URL "http://192.168.1.50:5000/upload"
+
+// If 1, delete the file from the SD card after a successful (HTTP 200)
+// upload, to save space. If 0, keep every recording on the SD card
+// regardless of upload result.
+#define DELETE_AFTER_UPLOAD 1
