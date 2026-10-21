@@ -1,0 +1,18 @@
+#pragma once
+
+// Copy this file to "config.h" (same folder) and fill in your own values.
+// config.h is gitignored so your WiFi credentials never get committed.
+
+// ---- WiFi credentials ----
+// Must be a 2.4GHz network/band - the ESP32S3 cannot join 5GHz networks.
+// If you're using your laptop's hotspot, force its band to 2.4GHz first
+// (see README.md).
+#define WIFI_SSID     "YOUR_HOTSPOT_SSID"
+#define WIFI_PASSWORD "YOUR_HOTSPOT_PASSWORD"
+
+// ---- WebSocket relay server ----
+// This points at live_audio_server.py running on the laptop hosting the
+// hotspot. Use the hotspot's OWN address here, not your home-WiFi IP:
+//   Windows Mobile Hotspot host address: 192.168.137.1
+//   Mac Personal Hotspot host address:   172.20.10.1
+#define WS_SERVER_URL "ws://192.168.137.1:8765/source"

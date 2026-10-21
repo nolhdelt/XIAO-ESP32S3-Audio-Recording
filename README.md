@@ -103,3 +103,40 @@ it only ever talks to `SERVER_URL`.
   `BITS_PER_SAMPLE` in the `.ino` if you need something different (the
   microphone supports other PDM rates).
 - `config.h` is gitignored so your WiFi credentials don't get committed.
+
+## Alternative: live streaming instead of record-then-upload
+
+`firmware/XIAO_ESP32S3_Live_Stream/` is a separate sketch for a different
+use case: instead of recording to a file and uploading it afterward, it
+streams microphone audio live, in real time, over a WebSocket, so you can
+listen to it in a browser as it happens.
+
+- Press the **BOOT** button (built into the XIAO board, no extra wiring)
+  to start/stop streaming.
+- Requires the **ArduinoWebsockets** library by Gil Maimon (Arduino IDE:
+  **Tools > Manage Libraries...**, search "ArduinoWebsockets").
+- Needs `server/live_audio_server.py` running on your computer (a relay
+  that forwards audio from the XIAO to any connected browser tabs):
+  ```bash
+  pip install websockets
+  python live_audio_server.py
+  ```
+- Open `server/listen.html` in a browser and click **Start Listening**.
+- Edit `firmware/XIAO_ESP32S3_Live_Stream/config.h` (copy from
+  `config.h.example`) with your WiFi credentials and `WS_SERVER_URL`
+  pointing at that server, e.g. `ws://192.168.1.50:8765/source`.
+
+**Using your laptop's hotspot instead of a router:** this works the same
+way, with two things to watch for:
+- The ESP32S3 can only join **2.4GHz** networks/bands. Windows Mobile
+  Hotspot sometimes defaults to 5GHz-only - under **Settings > Network &
+  Internet > Mobile hotspot > Network band**, explicitly pick **2.4 GHz**.
+  Mac Personal Hotspot broadcasts both bands by default, so this usually
+  isn't an issue there.
+- Use the hotspot's own address in `WS_SERVER_URL`, not a regular LAN IP:
+  Windows Mobile Hotspot is almost always `192.168.137.1`; Mac Personal
+  Hotspot is almost always `172.20.10.1`. Since your laptop and browser
+  are the same machine running the hotspot, `listen.html` can just use
+  `ws://localhost:8765/listen` regardless of which OS you're on.
+- Keep the laptop awake and the hotspot on for the whole session - some
+  OS power settings turn off the hotspot after a few idle minutes.

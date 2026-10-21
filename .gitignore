@@ -1,4 +1,5 @@
 firmware/XIAO_ESP32S3_Audio_Recorder/config.h
+firmware/XIAO_ESP32S3_Live_Stream/config.h
 server/recordings/
 __pycache__/
 *.pyc
