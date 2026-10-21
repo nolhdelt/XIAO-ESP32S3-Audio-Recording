@@ -96,6 +96,30 @@ involved:
 The device itself doesn't need to know or care which of these you pick —
 it only ever talks to `SERVER_URL`.
 
+## Alternative: no SD card (record into PSRAM instead)
+
+`firmware/XIAO_ESP32S3_Audio_Recorder_NoSD/` is for when you don't have a
+microSD card at all. It works exactly the same way (BOOT button starts
+and stops recording), except:
+
+- Audio is buffered in the Sense board's onboard PSRAM instead of being
+  written to a file on an SD card.
+- The whole recording is uploaded to `SERVER_URL` in a single HTTP POST
+  right after you stop it — there's no intermediate file.
+- Because everything has to fit in RAM, a single recording is capped at
+  `MAX_RECORD_SECONDS` (60 seconds by default) in the `.ino`. Raise it if
+  you need longer clips and have confirmed you have enough free PSRAM.
+- There's no fallback if the WiFi upload fails — without an SD card,
+  a failed upload means the recording is lost. Make sure WiFi is solid
+  before relying on this for anything you can't re-record.
+- Requires PSRAM to be enabled in the Arduino IDE: **Tools > PSRAM > OPI
+  PSRAM** (not optional here, unlike the SD-card version).
+
+Setup is otherwise identical to the SD-card version: copy
+`config.h.example` to `config.h` in that folder, fill in WiFi credentials
+and `SERVER_URL`, and run `server/receiver.py` (or your own endpoint) to
+receive the file.
+
 ## Notes / things you may need to adjust
 
 - The I2S pins (`I2S_CLK_PIN=42`, `I2S_DATA_PIN=41`) and SD_MMC pins
