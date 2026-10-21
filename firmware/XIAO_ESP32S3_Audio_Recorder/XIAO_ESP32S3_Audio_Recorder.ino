@@ -1,19 +1,19 @@
 /*
- * XIAO ESP32S3 Sense - Push-button WAV recorder with WiFi upload
+ * XIAO ESP32S3 Sense - BOOT-button WAV recorder with WiFi upload
  * ----------------------------------------------------------------
  * Hardware: Seeed XIAO ESP32S3 SENSE (needs the Sense expansion board
  *           for the onboard PDM microphone + microSD slot).
  *
  * Behavior:
- *   - Press the external button once  -> start recording to a .wav
- *     file on the microSD card.
+ *   - Press the BOOT button (built into the XIAO board) once -> start
+ *     recording to a .wav file on the microSD card.
  *   - Press it again                  -> stop recording, finalize the
- *     WAV header, then upload the file over WiFi via HTTP POST.
+ *     WAV header, then upload the file over WiFi via HTTP POST to your
+ *     computer.
  *
  * Wiring:
- *   - Button: one leg to any free GPIO (BUTTON_PIN below, default D1 /
- *     GPIO2), the other leg to GND. No external resistor needed -
- *     the pin is configured as INPUT_PULLUP.
+ *   - No external button needed - this uses the BOOT button already
+ *     on the XIAO board (GPIO0).
  *   - Microphone and SD card are built into the Sense board, wired to
  *     fixed pins (see below) - nothing to connect for those.
  *
@@ -40,8 +40,8 @@
 
 // ---------------- Pin configuration ----------------
 
-// External push button (wire between this pin and GND).
-#define BUTTON_PIN D1
+// BOOT button, built into the XIAO board (active low, no wiring needed).
+#define BUTTON_PIN 0
 
 // Onboard PDM microphone pins (XIAO ESP32S3 Sense, fixed by hardware).
 #define I2S_CLK_PIN 42

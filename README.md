@@ -1,8 +1,9 @@
 # XIAO ESP32S3 Audio Recorder over WiFi
 
-Push a button to start recording audio on a Seeed **XIAO ESP32S3 Sense**,
-push it again to stop, and the recording is saved to the onboard microSD
-card and then uploaded over WiFi to a server you control.
+Press the XIAO board's built-in **BOOT** button to start recording audio
+on a Seeed **XIAO ESP32S3 Sense**, press it again to stop, and the
+recording is saved to the onboard microSD card and then uploaded over
+WiFi to a server you control (e.g. your own computer).
 
 > **Important:** the built-in PDM microphone and microSD slot only exist
 > on the **Sense** variant (XIAO ESP32S3 + Sense expansion board). The
@@ -12,19 +13,21 @@ card and then uploaded over WiFi to a server you control.
 ## Hardware
 
 - Seeed XIAO ESP32S3 **Sense**
-- One momentary push button
 - microSD card (FAT32), inserted in the Sense board's slot
+- No external button needed — the onboard BOOT button is used instead
 
 ### Wiring
 
 | Component | Connection |
 |---|---|
-| Push button | One leg to `D1` (GPIO2), other leg to `GND`. Internal pull-up is used in software, so no resistor is needed. |
+| BOOT button | Built into the XIAO board (GPIO0) — nothing to wire. |
 | Microphone | Built into the Sense board — nothing to wire. |
 | microSD | Built into the Sense board's slot — nothing to wire. |
 
-If you wire the button to a different pin, change `BUTTON_PIN` at the top
-of the `.ino` file.
+If you'd rather use an external button on a different pin instead of
+BOOT, change `BUTTON_PIN` at the top of the `.ino` file and wire a
+button between that pin and `GND` (internal pull-up is used in
+software, so no resistor is needed).
 
 ## Firmware setup (Arduino IDE)
 
