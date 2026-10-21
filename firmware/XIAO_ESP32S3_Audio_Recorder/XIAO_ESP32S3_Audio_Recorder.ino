@@ -20,8 +20,8 @@
  * Required boards/libraries (Arduino IDE):
  *   - Board package: "esp32" by Espressif Systems (v3.x), board
  *     "XIAO_ESP32S3".
- *   - Libraries used below (I2S.h, SD_MMC.h, WiFi.h, HTTPClient.h) all
- *     ship with the esp32 board package - no extra installs needed.
+ *   - Libraries used below (ESP_I2S.h, SD_MMC.h, WiFi.h, HTTPClient.h)
+ *     all ship with the esp32 board package - no extra installs needed.
  *
  * Before uploading:
  *   1. Copy config.h.example to config.h in this same folder.
@@ -30,13 +30,15 @@
  *      same network, or point SERVER_URL at your own HTTP endpoint.
  */
 
-#include <I2S.h>
+#include <ESP_I2S.h>
 #include "FS.h"
 #include "SD_MMC.h"
 #include <WiFi.h>
 #include <HTTPClient.h>
 
 #include "config.h"
+
+I2SClass I2S;
 
 // ---------------- Pin configuration ----------------
 
@@ -83,8 +85,8 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(BUTTON_PIN), onButtonPress, FALLING);
 
   // Microphone (PDM over I2S)
-  I2S.setAllPins(-1, I2S_CLK_PIN, I2S_DATA_PIN, -1, -1);
-  if (!I2S.begin(PDM_MONO_MODE, SAMPLE_RATE, BITS_PER_SAMPLE)) {
+  I2S.setPinsPdmRx(I2S_CLK_PIN, I2S_DATA_PIN);
+  if (!I2S.begin(I2S_MODE_PDM_RX, SAMPLE_RATE, I2S_DATA_BIT_WIDTH_16BIT, I2S_SLOT_MODE_MONO)) {
     Serial.println("ERROR: failed to initialize microphone (I2S). Halting.");
     while (1) delay(1000);
   }

@@ -18,13 +18,15 @@
  *      WS_SERVER_URL in config.h.
  */
 
-#include <I2S.h>
+#include <ESP_I2S.h>
 #include <WiFi.h>
 #include <ArduinoWebsockets.h>
 
 #include "config.h"
 
 using namespace websockets;
+
+I2SClass I2S;
 
 // ---------------- Pin configuration ----------------
 
@@ -62,8 +64,8 @@ void setup() {
   pinMode(BUTTON_PIN, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(BUTTON_PIN), onButtonPress, FALLING);
 
-  I2S.setAllPins(-1, I2S_CLK_PIN, I2S_DATA_PIN, -1, -1);
-  if (!I2S.begin(PDM_MONO_MODE, SAMPLE_RATE, BITS_PER_SAMPLE)) {
+  I2S.setPinsPdmRx(I2S_CLK_PIN, I2S_DATA_PIN);
+  if (!I2S.begin(I2S_MODE_PDM_RX, SAMPLE_RATE, I2S_DATA_BIT_WIDTH_16BIT, I2S_SLOT_MODE_MONO)) {
     Serial.println("ERROR: failed to initialize microphone (I2S). Halting.");
     while (1) delay(1000);
   }
